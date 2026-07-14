@@ -26,6 +26,7 @@ export function TaskProvider({ children }) {
   const [tasks, setTasks] = useState(() => {
     try {
       const savedTasks = localStorage.getItem("taskflow-tasks");
+
       return savedTasks ? JSON.parse(savedTasks) : [];
     } catch (error) {
       console.error("Unable to load saved tasks:", error);
@@ -38,7 +39,14 @@ export function TaskProvider({ children }) {
   });
 
   useEffect(() => {
-    localStorage.setItem("taskflow-tasks", JSON.stringify(tasks));
+    try {
+      localStorage.setItem(
+        "taskflow-tasks",
+        JSON.stringify(tasks)
+      );
+    } catch (error) {
+      console.error("Unable to save tasks:", error);
+    }
   }, [tasks]);
 
   useEffect(() => {
@@ -67,6 +75,7 @@ export function TaskProvider({ children }) {
         typeof crypto !== "undefined" && crypto.randomUUID
           ? crypto.randomUUID()
           : `${Date.now()}-${Math.random()}`,
+
       title: taskData.title.trim(),
       description: taskData.description.trim(),
       dueDate: taskData.dueDate,
@@ -76,7 +85,10 @@ export function TaskProvider({ children }) {
       createdAt: new Date().toISOString(),
     };
 
-    setTasks((previousTasks) => [newTask, ...previousTasks]);
+    setTasks((previousTasks) => [
+      newTask,
+      ...previousTasks,
+    ]);
 
     return newTask;
   }
@@ -106,6 +118,7 @@ export function TaskProvider({ children }) {
           ? {
               ...task,
               completed: !task.completed,
+              updatedAt: new Date().toISOString(),
             }
           : task
       )
@@ -114,23 +127,43 @@ export function TaskProvider({ children }) {
 
   function deleteTask(taskId) {
     setTasks((previousTasks) =>
-      previousTasks.filter((task) => task.id !== taskId)
+      previousTasks.filter(
+        (task) => task.id !== taskId
+      )
     );
   }
 
   function clearCompletedTasks() {
     setTasks((previousTasks) =>
-      previousTasks.filter((task) => !task.completed)
+      previousTasks.filter(
+        (task) => !task.completed
+      )
     );
+  }
+
+  function deleteAllTasks() {
+    setTasks([]);
   }
 
   const statistics = useMemo(() => {
     const total = tasks.length;
-    const completed = tasks.filter((task) => task.completed).length;
-    const pending = tasks.filter((task) => !task.completed).length;
-    const overdue = tasks.filter(isTaskOverdue).length;
+
+    const completed = tasks.filter(
+      (task) => task.completed
+    ).length;
+
+    const pending = tasks.filter(
+      (task) => !task.completed
+    ).length;
+
+    const overdue = tasks.filter(
+      isTaskOverdue
+    ).length;
+
     const highPriority = tasks.filter(
-      (task) => task.priority === "High" && !task.completed
+      (task) =>
+        task.priority === "High" &&
+        !task.completed
     ).length;
 
     return {
@@ -139,8 +172,13 @@ export function TaskProvider({ children }) {
       pending,
       overdue,
       highPriority,
+
       completionPercentage:
-        total === 0 ? 0 : Math.round((completed / total) * 100),
+        total === 0
+          ? 0
+          : Math.round(
+              (completed / total) * 100
+            ),
     };
   }, [tasks]);
 
@@ -150,11 +188,13 @@ export function TaskProvider({ children }) {
     statistics,
     initialForm,
     priorityWeight,
+
     addTask,
     updateTask,
     toggleTask,
     deleteTask,
     clearCompletedTasks,
+    deleteAllTasks,
     isTaskOverdue,
     setDarkMode,
   };
@@ -170,7 +210,9 @@ export function useTasks() {
   const context = useContext(TaskContext);
 
   if (!context) {
-    throw new Error("useTasks must be used inside TaskProvider");
+    throw new Error(
+      "useTasks must be used inside TaskProvider"
+    );
   }
 
   return context;
