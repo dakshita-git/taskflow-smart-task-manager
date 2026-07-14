@@ -1,16 +1,14 @@
-# React + Vite
+# TaskFlow – Smart Task Management Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TaskFlow is a modern, responsive task management web application built with React. It helps users create, organize, prioritize, track, and complete tasks from a clean multi-page productivity dashboard.
 
-Currently, two official plugins are available:
+This project was developed as part of a Vibe Coding Assessment to demonstrate planning, AI-assisted development, progressive Git commits, problem-solving, documentation, testing, and deployment.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Application
 
-## React Compiler
+Add your Vercel deployment link here:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```text
+https://github.com/dakshita-git/taskflow-smart-task-manager
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+https://taskflow-smart-task-manager.vercel.app
